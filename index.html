@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pertanyaan buat AIDA 💖</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffe6f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .screen {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #d6336c;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    p {
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    form {
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .question {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .question label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #d6336c;
+    }
+
+    .question input[type="text"],
+    .question textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .question textarea {
+      resize: none;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .options label {
+      font-weight: normal;
+      color: #333;
+    }
+
+    .input-group {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin: 8px 0;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px;
+      padding-right: 40px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    /* Password hidden effect */
+    .password-hidden {
+      -webkit-text-security: disc;
+      text-security: disc;
+    }
+
+    .toggle-eye {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: #888;
+      user-select: none;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #d6336c;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #b82d5a;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+  <!-- Font Awesome buat ikon mata -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Halaman Password -->
+  <div class="screen" id="passwordScreen">
+    <h2>🔒 Masukin Password</h2>
+    <p>Password: <b>akusayangkamu</b> 💕</p>
+    <div class="input-group">
+      <input type="text" id="passwordInput" class="password-hidden" placeholder="Ketik password di sini">
+      <i class="fa-solid fa-eye-slash toggle-eye" id="eyeIcon"></i>
+    </div>
+    <button onclick="checkPassword()">Masuk</button>
+  </div>
+
+  <!-- Halaman Quiz -->
+  <div class="screen hidden" id="quizScreen">
+    <h2>💌 jawab jujur ya AIDA 💌</h2>
+    <form id="quizForm">
+      <div class="question">
+        <label>1. Apa warna favorit aku?</label>
+        <div class="options">
+          <label><input type="radio" name="q1" value="Merah muda"> Merah muda</label>
+          <label><input type="radio" name="q1" value="Biru"> Biru</label>
+          <label><input type="radio" name="q1" value="Hitam"> Hitam</label>
+          <label><input type="radio" name="q1" value="Ungu"> Ungu</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>2. kenapa kamu mau kenal sama aku?</label>
+        <input type="text" name="q2" required>
+      </div>
+
+      <div class="question">
+        <label>3. Momen paling berkesan?</label>
+        <textarea name="q3" rows="3" required></textarea>
+      </div>
+
+      <div class="question">
+        <label>4. Apa hal yang paling kamu sukai dari aku?</label>
+        <textarea name="q4" rows="3" required></textarea>
+      </div>
+
+      <button type="submit">Kirim Jawaban 💌</button>
+    </form>
+  </div>
+
+<!-- Halaman Terima Kasih -->
+<div class="screen hidden" id="thanksScreen">
+  <h2>💖 Terima Kasih Sayang 💖</h2>
+  <p>Jawabanmu udah aku terima. Kamu emang yang paling manis 😘</p>
+  <p style="margin-top:20px; color:#555; font-style:italic;">
+    Pertanyaan ini dibuat oleh : Cahya Aji Anugrah 💌
+  </p>
+</div>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("3UXjO-KD_Gex9iVBA"); // ✅ Public Key
+    })();
+
+    // Toggle password
+    function togglePassword() {
+      const input = document.getElementById("passwordInput");
+      const eyeIcon = document.getElementById("eyeIcon");
+
+      if (input.classList.contains("password-hidden")) {
+        input.classList.remove("password-hidden");
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
+      } else {
+        input.classList.add("password-hidden");
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
+      }
+    }
+
+    document.getElementById("eyeIcon").addEventListener("click", togglePassword);
+
+    // Cek password
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      if (input === "akusayangkamu") {
+        document.getElementById("passwordScreen").classList.add("hidden");
+        document.getElementById("quizScreen").classList.remove("hidden");
+      } else {
+        alert("Password salah 😝 coba lagi, sayang~");
+      }
+    }
+
+    // Kirim form
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      if (!form.q1.value) {
+        alert("Jawab pertanyaan 1 dulu dong 💕");
+        return;
+      }
+
+      const templateParams = {
+        q1: form.q1.value,
+        q2: form.q2.value,
+        q3: form.q3.value,
+        q4: form.q4.value
+      };
+
+      emailjs.send("service_aoa84j9", "template_r1zhi4d", templateParams)
+        .then(function(response) {
+          document.getElementById("quizScreen").classList.add("hidden");
+          document.getElementById("thanksScreen").classList.remove("hidden");
+        }, function(error) {
+          console.error("Error:", error);
+          alert("Maaf, terjadi kesalahan saat mengirim jawaban. Coba lagi ya.");
+        });
+    });
+  </script>
+</body>
+</html>
